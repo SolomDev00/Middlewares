@@ -7,6 +7,7 @@ import productsRouter from "./routes/products";
 import ProductsViewController from "./controllers/productViewController";
 import ErrorMiddleware from "./middlewares/Error";
 import dotenv from "dotenv";
+import NotFoundMiddleware from "./middlewares/NotFound";
 
 const app = express();
 
@@ -24,7 +25,6 @@ app.use(express.static(path.join(__dirname, "public")));
 const fakeProductsData = generateFakeProducts();
 
 const productService = new ProductService(fakeProductsData);
-const productController = new ProductController(productService);
 const productsViewController = new ProductsViewController(productService);
 
 // *** Products Routes
@@ -36,9 +36,10 @@ app.use("/api/products", productsRouter);
 
 // *** Base Routes
 app.get("/", (_, res: Response) => res.render("index"));
-app.get("*", (_, res: Response) => res.render("notFound"));
+// app.get("*", (_, res: Response) => res.render("notFound"));
 
 // *** Middlewares
+app.use(NotFoundMiddleware.handle);
 app.use(ErrorMiddleware.handle);
 
 const PORT: number = 5000;
