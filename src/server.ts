@@ -6,8 +6,11 @@ import path from "path";
 import productsRouter from "./routes/products";
 import ProductsViewController from "./controllers/productViewController";
 import ErrorMiddleware from "./middlewares/Error";
+import dotenv from "dotenv";
 
 const app = express();
+
+dotenv.config();
 
 app.use(express.json());
 
