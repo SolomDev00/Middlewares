@@ -9,18 +9,32 @@ import ErrorMiddleware from "./middlewares/Error";
 import dotenv from "dotenv";
 import NotFoundMiddleware from "./middlewares/NotFound";
 import helmet from "helmet";
+import morgan from "morgan";
+import compression from "compression";
+import { rateLimit } from "express-rate-limit";
 
 const app = express();
 
 dotenv.config();
 
 app.use(express.json());
+app.use(compression);
 app.use(
   helmet({
     contentSecurityPolicy: false,
     xFrameOptions: {
       action: "deny",
     },
+  })
+);
+app.use(morgan("dev"));
+app.use(
+  rateLimit({
+    windowMs: 15 * 60 * 1000,
+    limit: 100,
+    standardHeaders: "draft-8",
+    legacyHeaders: false,
+    message: "Rate Limit for Requesting ...",
   })
 );
 
