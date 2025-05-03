@@ -8,12 +8,21 @@ import ProductsViewController from "./controllers/productViewController";
 import ErrorMiddleware from "./middlewares/Error";
 import dotenv from "dotenv";
 import NotFoundMiddleware from "./middlewares/NotFound";
+import helmet from "helmet";
 
 const app = express();
 
 dotenv.config();
 
 app.use(express.json());
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+    xFrameOptions: {
+      action: "deny",
+    },
+  })
+);
 
 // *** Set views directory and engine
 app.set("view engine", "pug");

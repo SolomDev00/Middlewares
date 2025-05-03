@@ -15,6 +15,7 @@ export default class ProductService {
   findAll(): Product[] {
     return this.products;
   }
+
   filterByQuery(filterQuery?: string) {
     if (filterQuery) {
       const propertiesToFilter = filterQuery.split(",");
